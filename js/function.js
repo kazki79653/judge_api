@@ -126,7 +126,7 @@ function paging(value) {
     counter_1.innerHTML = n_1;
     counter_2.innerHTML = n_2;
     counter_3.innerHTML = n_3;
-    // counter_4.innerHTML = n_4;
+    counter_4.innerHTML = n_4;
     counter_side_3.innerHTML = n_5;
     counter_side_4.innerHTML = n_6;
 }
@@ -198,7 +198,7 @@ function addCount(num, sign){
     counter_1.innerHTML = n_1;
     counter_2.innerHTML = n_2;
     counter_3.innerHTML = n_3;
-    // counter_4.innerHTML = n_4;
+    counter_4.innerHTML = n_4;
     counter_side_3.innerHTML = n_5;
     counter_side_4.innerHTML = n_6;
 }
@@ -378,7 +378,7 @@ window.addEventListener("load", ()=>{
     counter_1 = document.getElementById("counter-1");
     counter_2 = document.getElementById("counter-2");
     counter_3 = document.getElementById("counter-3");
-    // counter_4 = document.getElementById("counter-4");
+    counter_4 = document.getElementById("counter-4");
     counter_side_1 = document.getElementById("counter-side-1");
     counter_side_2 = document.getElementById("counter-side-2");
     counter_side_3 = document.getElementById("counter-side-3");

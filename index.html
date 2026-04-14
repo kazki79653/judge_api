@@ -117,25 +117,56 @@
               <input type="checkbox" id="stadium" class="label-check" onclick="this.click();chenge_color(`stadium`);">スタジアム</td>
           </tr>
         </table>
+
         <div class="avility-wrapper">
           <div class="ability-box">
-            <div class="av-txt">特性 A : </div>
+            <div class="av-txt">　おくのて　　　　: </div>
             <a class="updown-btn w-button" onclick="addCount(1, `-`)">-</a>
             <div id="counter-1" class="av-count-txt">0</div>
             <a class="updown-btn w-button" onclick="addCount(1, `+`)">+</a>
           </div>
+
           <div class="ability-box">
-            <div class="av-txt">特性 B : </div>
+            <div class="av-txt">　さかてにとる　　: </div>
             <a class="updown-btn w-button" onclick="addCount(2, `-`)">-</a>
             <div id="counter-2" class="av-count-txt">0</div>
             <a class="updown-btn w-button" onclick="addCount(2, `+`)">+</a>
           </div>
+
           <div class="ability-box">
-            <div class="av-txt">特性 C : </div>
+            <div class="av-txt">
+		<select name="AbiA" id="AbiA-select">
+		<option value="AbilityA">特性 A </option>
+		<option value="RunErrand">おつかいダッシュ</option>
+		<option value="AdrenaBrain">アドレナブレイン</option>
+		<option value="TealDance">みどりのまい</option>
+		<option value="ReconDirective">ていさつしれい</option>
+		<option value="LunarCycle">ルナサイクル</option>
+		<option value="BoomGroove">ドンドンだいこ</option>
+		</select>
+	 	</div>
             <a class="updown-btn w-button" onclick="addCount(3, `-`)">-</a>
             <div id="counter-3" class="av-count-txt">0</div>
             <a class="updown-btn w-button" onclick="addCount(3, `+`)">+</a>
           </div>
+
+          <div class="ability-box">
+            <div class="av-txt">
+		<select name="AbiB" id="AbiB-select">
+		<option value="AbilityB">特性 B </option>
+		<option value="RunErrand">おつかいダッシュ</option>
+		<option value="AdrenaBrain">アドレナブレイン</option>
+		<option value="TealDance">みどりのまい</option>
+		<option value="ReconDirective">ていさつしれい</option>
+		<option value="LunarCycle">ルナサイクル</option>
+		<option value="BoomGroove">ドンドンだいこ</option>
+		</select>
+	 	</div>
+            <a class="updown-btn w-button" onclick="addCount(4, `-`)">-</a>
+            <div id="counter-4" class="av-count-txt">0</div>
+            <a class="updown-btn w-button" onclick="addCount(4, `+`)">+</a>
+          </div>
+
         </div>
         <div class="side-wrapper">
           <div class="side-box"><div class="side-txt">サイド取得</div></div>
