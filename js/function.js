@@ -8,24 +8,82 @@ let a_memorys, b_memorys;
 let player_turn, player_name, player, turn, turn_line, player_sig;
 let check_table, checks, menu, nav, pop_table, pop_help, page_main;
 let header = ["Eg", "St", "Esc", "St"]
+let ability_selects;
 const f_memory = [false, false, false, false, 0, 0, 0, 0, 0, 0];
-const initial_turns = 15;
+// 1ターンの記録は f_memory の後ろに特性A〜Dの選択状態が続く形
+const ability_offset = f_memory.length;
+// 履歴表に最低限表示するターン数
+const history_turns = 15;
 
-function new_memory() {
-    return f_memory.slice();
-}
+// 特性を追加するときはこの配列に1行足すだけでよい。4つのプルダウン全てに反映される。
+const abilities = [
+    {name: "おくのて", value: "LastDitch"},
+    {name: "さかてにとる", value: "FlipTheScript"},
+    {name: "おつかいダッシュ", value: "RunErrand"},
+    {name: "アドレナブレイン", value: "AdrenaBrain"},
+    {name: "みどりのまい", value: "TealDance"},
+    {name: "ていさつしれい", value: "ReconDirective"},
+    {name: "ルナサイクル", value: "LunarCycle"},
+    {name: "スカイドロー", value: "SkyDraw"},
+    {name: "ドンドンだいこ", value: "BoomGroove"}
+];
+const ability_slots = [
+    {id: "AbiA-select", label: "特性 A", value: "AbilityA"},
+    {id: "AbiB-select", label: "特性 B", value: "AbilityB"},
+    {id: "AbiC-select", label: "特性 C", value: "AbilityC"},
+    {id: "AbiD-select", label: "特性 D", value: "AbilityD"}
+];
 
-function init_memorys() {
-    var memorys = {};
-    for (var t = 1; t <= initial_turns; t++) {
-        memorys[t] = new_memory();
+function default_abilities() {
+    var values = [];
+    for (var s = 0; s < ability_slots.length; s++) {
+        values.push(ability_slots[s].value);
     }
-    return memorys;
+    return values;
 }
 
+function read_abilities() {
+    var values = [];
+    for (var s = 0; s < ability_selects.length; s++) {
+        values.push(ability_selects[s].value);
+    }
+    return values;
+}
+
+function write_abilities(values) {
+    for (var s = 0; s < ability_selects.length; s++) {
+        ability_selects[s].value = values[s];
+    }
+}
+
+function init_ability_selects() {
+    ability_selects = [];
+    for (var s = 0; s < ability_slots.length; s++) {
+        var slot = ability_slots[s];
+        var select = document.getElementById(slot.id);
+        select.appendChild(new Option(slot.label, slot.value));
+        for (var a = 0; a < abilities.length; a++) {
+            select.appendChild(new Option(abilities[a].name, abilities[a].value));
+        }
+        ability_selects.push(select);
+    }
+}
+
+function new_memory(base_abilities) {
+    return f_memory.slice().concat(base_abilities || default_abilities());
+}
+
+// 未到達のターンは参照時に作る。特性の選択状態は同じプレイヤーの直前のターンから引き継ぐ。
 function get_memory(memorys, turn) {
     if (memorys[turn] === undefined) {
-        memorys[turn] = new_memory();
+        var base = null;
+        for (var t = turn - 1; t >= 1; t--) {
+            if (memorys[t] !== undefined) {
+                base = memorys[t].slice(ability_offset);
+                break;
+            }
+        }
+        memorys[turn] = new_memory(base);
     }
     return memorys[turn];
 }
@@ -95,6 +153,7 @@ function paging(value) {
         memory.push(n_6);
         memory.push(n_5);
     }
+    memory = memory.concat(read_abilities());
 
     if (player_name == "先攻") {
         a_memorys[player_turn] = memory;
@@ -143,6 +202,7 @@ function paging(value) {
         n_5 = n_memory[9];
         n_6 = n_memory[8];
     }
+    write_abilities(n_memory.slice(ability_offset));
     counter_1.innerHTML = n_1;
     counter_2.innerHTML = n_2;
     counter_3.innerHTML = n_3;
@@ -233,12 +293,12 @@ function active_help() {
 }
 
 function check_memory_utils(row, memory) {
-    var record = memory[target_key];
+    var record = memory[target_key] === undefined ? f_memory : memory[target_key];
     for (c=0; c<header.length; c++) {
         var td = document.createElement("td");
         td.classList.add("player_table_td")
         row.appendChild(td);
-        if (record === undefined || record[c] === undefined) {
+        if (record[c] === undefined) {
             td.innerHTML = "";
         } else {
             if (record[c]) {
@@ -252,7 +312,7 @@ function check_memory_utils(row, memory) {
 }
 function check_memory() {
     var table = document.getElementById("player_table");
-    turns = Math.max(Object.keys(a_memorys).length, Object.keys(b_memorys).length);
+    turns = Math.max(history_turns, Object.keys(a_memorys).length, Object.keys(b_memorys).length);
     // 行を追加
     for (var r=0; r<turns; r++) {
         var row = table.insertRow(-1);
@@ -311,8 +371,9 @@ function memory_clear() {
         player.innerHTML = player_name;
         player_turn = 1;
         turn.innerHTML = player_turn;
-        a_memorys = init_memorys();
-        b_memorys = init_memorys();
+        a_memorys = {};
+        b_memorys = {};
+        write_abilities(default_abilities());
         check_reset();
         counter_side_1.innerHTML = 6;
         counter_side_2.innerHTML = 6;
@@ -437,6 +498,7 @@ window.addEventListener("load", ()=>{
     check_2.style.background = "#0a8b2a";
     check_3.style.background = "#0a8b2a";
     check_4.style.background = "#0a8b2a";
-    a_memorys = init_memorys();
-    b_memorys = init_memorys();
+    a_memorys = {};
+    b_memorys = {};
+    init_ability_selects();
 });
