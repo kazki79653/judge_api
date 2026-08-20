@@ -194,10 +194,15 @@
     padding-right: 0px;
     padding-left: 0px;
   }
+  /* 親のalign-items:centerで縦中央に置かれるため、ターン数が増えて表が
+     高くなるほど上へはみ出し、先攻/後攻の見出し行が見切れる。
+     topを明示して上端からの位置を固定し、高さに依存しないようにする
+     (65pxはハンバーガーボタンの真下) */
   .player_table {
     position: absolute;
     background: darksalmon;
-    margin-top: 45%;
+    top: 65px;
+    margin-top: 0;
     margin-left: 5%;
   }
   .player_table_td {
