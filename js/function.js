@@ -9,6 +9,26 @@ let player_turn, player_name, player, turn, turn_line, player_sig;
 let check_table, checks, menu, nav, pop_table, pop_help, page_main;
 let header = ["Eg", "St", "Esc", "St"]
 const f_memory = [false, false, false, false, 0, 0, 0, 0, 0, 0];
+const initial_turns = 15;
+
+function new_memory() {
+    return f_memory.slice();
+}
+
+function init_memorys() {
+    var memorys = {};
+    for (var t = 1; t <= initial_turns; t++) {
+        memorys[t] = new_memory();
+    }
+    return memorys;
+}
+
+function get_memory(memorys, turn) {
+    if (memorys[turn] === undefined) {
+        memorys[turn] = new_memory();
+    }
+    return memorys[turn];
+}
 
 function chenge_color(target, player_name) {
     if (target == "energy") {
@@ -103,9 +123,9 @@ function paging(value) {
 
     //カウンタの切り替え
     if (player_name == "先攻") {
-        var n_memory = a_memorys[player_turn]
+        var n_memory = get_memory(a_memorys, player_turn)
     } else if (player_name == "後攻") {
-        var n_memory = b_memorys[player_turn]
+        var n_memory = get_memory(b_memorys, player_turn)
     }
     checks[0].checked = n_memory[0];
     checks[1].checked = n_memory[1];
@@ -213,14 +233,15 @@ function active_help() {
 }
 
 function check_memory_utils(row, memory) {
+    var record = memory[target_key];
     for (c=0; c<header.length; c++) {
         var td = document.createElement("td");
         td.classList.add("player_table_td")
         row.appendChild(td);
-        if (memory[target_key][c] === undefined) {
+        if (record === undefined || record[c] === undefined) {
             td.innerHTML = "";
         } else {
-            if (memory[target_key][c]) {
+            if (record[c]) {
                 td.innerHTML = "〇";
             } else {
                 td.innerHTML = "-";
@@ -231,7 +252,7 @@ function check_memory_utils(row, memory) {
 }
 function check_memory() {
     var table = document.getElementById("player_table");
-    turns = Object.keys(a_memorys).length;
+    turns = Math.max(Object.keys(a_memorys).length, Object.keys(b_memorys).length);
     // 行を追加
     for (var r=0; r<turns; r++) {
         var row = table.insertRow(-1);
@@ -290,12 +311,8 @@ function memory_clear() {
         player.innerHTML = player_name;
         player_turn = 1;
         turn.innerHTML = player_turn;
-        a_memorys = {1: f_memory, 2: f_memory, 3: f_memory, 4: f_memory, 5: f_memory, 
-                     6: f_memory, 7: f_memory, 8: f_memory, 9: f_memory, 10: f_memory,
-                     11: f_memory, 12: f_memory, 13: f_memory, 14: f_memory, 15: f_memory};
-        b_memorys = {1: f_memory, 2: f_memory, 3: f_memory, 4: f_memory, 5: f_memory, 
-                     6: f_memory, 7: f_memory, 8: f_memory, 9: f_memory, 10: f_memory,
-                     11: f_memory, 12: f_memory, 13: f_memory, 14: f_memory, 15: f_memory};
+        a_memorys = init_memorys();
+        b_memorys = init_memorys();
         check_reset();
         counter_side_1.innerHTML = 6;
         counter_side_2.innerHTML = 6;
@@ -420,10 +437,6 @@ window.addEventListener("load", ()=>{
     check_2.style.background = "#0a8b2a";
     check_3.style.background = "#0a8b2a";
     check_4.style.background = "#0a8b2a";
-    a_memorys = {1: f_memory, 2: f_memory, 3: f_memory, 4: f_memory, 5: f_memory, 
-                 6: f_memory, 7: f_memory, 8: f_memory, 9: f_memory, 10: f_memory,
-                 11: f_memory, 12: f_memory, 13: f_memory, 14: f_memory, 15: f_memory};
-    b_memorys = {1: f_memory, 2: f_memory, 3: f_memory, 4: f_memory, 5: f_memory, 
-                 6: f_memory, 7: f_memory, 8: f_memory, 9: f_memory, 10: f_memory,
-                 11: f_memory, 12: f_memory, 13: f_memory, 14: f_memory, 15: f_memory};
+    a_memorys = init_memorys();
+    b_memorys = init_memorys();
 });
