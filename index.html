@@ -42,7 +42,7 @@
               </ul>
               <ul>
                 <label class="help_list">特性のカウント</label>
-                <li class="help_list">特性A,B,Cの横の+-ボタンで特性の使用回数をカウントできます。</li>
+                <li class="help_list">特性A〜Dのプルダウンで特性名を選び、横の+-ボタンで使用回数をカウントできます。</li>
               </ul>
               <ul>
                 <label class="help_list">サイドのカウント</label>
@@ -120,48 +120,28 @@
 
         <div class="avility-wrapper">
           <div class="ability-box">
-            <div class="av-txt">　おくのて　　　　: </div>
+            <div class="av-txt"><select name="AbiA" id="AbiA-select"></select></div>
             <a class="updown-btn w-button" onclick="addCount(1, `-`)">-</a>
             <div id="counter-1" class="av-count-txt">0</div>
             <a class="updown-btn w-button" onclick="addCount(1, `+`)">+</a>
           </div>
 
           <div class="ability-box">
-            <div class="av-txt">　さかてにとる　　: </div>
+            <div class="av-txt"><select name="AbiB" id="AbiB-select"></select></div>
             <a class="updown-btn w-button" onclick="addCount(2, `-`)">-</a>
             <div id="counter-2" class="av-count-txt">0</div>
             <a class="updown-btn w-button" onclick="addCount(2, `+`)">+</a>
           </div>
 
           <div class="ability-box">
-            <div class="av-txt">
-		<select name="AbiA" id="AbiA-select">
-		<option value="AbilityA">特性 A </option>
-		<option value="RunErrand">おつかいダッシュ</option>
-		<option value="AdrenaBrain">アドレナブレイン</option>
-		<option value="TealDance">みどりのまい</option>
-		<option value="ReconDirective">ていさつしれい</option>
-		<option value="LunarCycle">ルナサイクル</option>
-		<option value="BoomGroove">ドンドンだいこ</option>
-		</select>
-	 	</div>
+            <div class="av-txt"><select name="AbiC" id="AbiC-select"></select></div>
             <a class="updown-btn w-button" onclick="addCount(3, `-`)">-</a>
             <div id="counter-3" class="av-count-txt">0</div>
             <a class="updown-btn w-button" onclick="addCount(3, `+`)">+</a>
           </div>
 
           <div class="ability-box">
-            <div class="av-txt">
-		<select name="AbiB" id="AbiB-select">
-		<option value="AbilityB">特性 B </option>
-		<option value="RunErrand">おつかいダッシュ</option>
-		<option value="AdrenaBrain">アドレナブレイン</option>
-		<option value="TealDance">みどりのまい</option>
-		<option value="ReconDirective">ていさつしれい</option>
-		<option value="LunarCycle">ルナサイクル</option>
-		<option value="BoomGroove">ドンドンだいこ</option>
-		</select>
-	 	</div>
+            <div class="av-txt"><select name="AbiD" id="AbiD-select"></select></div>
             <a class="updown-btn w-button" onclick="addCount(4, `-`)">-</a>
             <div id="counter-4" class="av-count-txt">0</div>
             <a class="updown-btn w-button" onclick="addCount(4, `+`)">+</a>

@@ -30,6 +30,35 @@ function get_memory(memorys, turn) {
     return memorys[turn];
 }
 
+// 特性を追加するときはこの配列に1行足すだけでよい。4つのプルダウン全てに反映される。
+const abilities = [
+    {name: "おくのて", value: "TrumpCard"},
+    {name: "さかてにとる", value: "TurnAbout"},
+    {name: "おつかいダッシュ", value: "RunErrand"},
+    {name: "アドレナブレイン", value: "AdrenaBrain"},
+    {name: "みどりのまい", value: "TealDance"},
+    {name: "ていさつしれい", value: "ReconDirective"},
+    {name: "ルナサイクル", value: "LunarCycle"},
+    {name: "ドンドンだいこ", value: "BoomGroove"}
+];
+const ability_slots = [
+    {id: "AbiA-select", label: "特性 A", value: "AbilityA"},
+    {id: "AbiB-select", label: "特性 B", value: "AbilityB"},
+    {id: "AbiC-select", label: "特性 C", value: "AbilityC"},
+    {id: "AbiD-select", label: "特性 D", value: "AbilityD"}
+];
+
+function init_ability_selects() {
+    for (var s = 0; s < ability_slots.length; s++) {
+        var slot = ability_slots[s];
+        var select = document.getElementById(slot.id);
+        select.appendChild(new Option(slot.label, slot.value));
+        for (var a = 0; a < abilities.length; a++) {
+            select.appendChild(new Option(abilities[a].name, abilities[a].value));
+        }
+    }
+}
+
 function chenge_color(target, player_name) {
     if (target == "energy") {
         if (checks[0].checked) {
@@ -439,4 +468,5 @@ window.addEventListener("load", ()=>{
     check_4.style.background = "#0a8b2a";
     a_memorys = init_memorys();
     b_memorys = init_memorys();
+    init_ability_selects();
 });
