@@ -31,6 +31,7 @@
             <a href="#" class="menu_list" onclick="check_memory(true)">記録を確認する</a><br>
             <a href="#" class="menu_list" onclick="check_reset()">このターンの入力をクリアする</a><br>  
             <a href="#" class="menu_list" onclick="change_att()">先後を入れ替える</a><br>
+            <a href="#" class="menu_list" onclick="mirror_view()">ミラー表示</a><br>
             <input type="button" class="pop_btn" onclick="pullDown()" value="閉じる">
           </nav>
           <div class="help-table-wrapper">
@@ -63,7 +64,8 @@
                 <li class="help_list">記録をクリアする：その試合の記録がリセットされ、先攻1ターン目へ遷移します。</li>
                 <li class="help_list">記録を確認する：その試合の履歴が確認できます。</li>
                 <li class="help_list">このターンの入力をクリアする：そのターンの記録がリセットされます。</li>
-                <li class="help_list">先後を入れ替える：先攻と後攻の位置が左右反転します。</li>
+                <li class="help_list">先後を入れ替える：先攻と後攻の記録がまるごと入れ替わります。チェック・特性の選択と回数・サイドのすべてが相手側へ移ります。先後を取り違えて記録してしまったときの修正に使います。</li>
+                <li class="help_list">ミラー表示：先攻と後攻の表示位置が左右反転します。記録は移動しません。対面に座っている相手と画面を共有するときに使います。</li>
               </ul>
             </div>
         </div>
