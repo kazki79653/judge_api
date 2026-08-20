@@ -24,6 +24,7 @@ const abilities = [
     {name: "みどりのまい", value: "TealDance"},
     {name: "ていさつしれい", value: "ReconDirective"},
     {name: "ルナサイクル", value: "LunarCycle"},
+    {name: "スカイドロー", value: "SkyDraw"},
     {name: "ドンドンだいこ", value: "BoomGroove"}
 ];
 const ability_slots = [
