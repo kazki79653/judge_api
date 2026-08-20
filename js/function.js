@@ -1,6 +1,8 @@
 let counter_1, counter_2, counter_3, counter_4;
 let counter_side_1, counter_side_2, counter_side_3, counter_side_4;
 let att_1, att_2;
+let side_label_1, side_label_2, side_count_1, side_count_2, side_number_1, side_number_2;
+const att_colors = {"先攻": "#d11e1e", "後攻": "#3657be"};
 let n_1, n_2, n_3, n_4, n_5, n_6;
 let side_btn_1, side_btn_2, side_btn_3, side_btn_4;
 let check_1, check_2, check_3, check_4;
@@ -441,6 +443,35 @@ function change_att() {
     load_turn();
 }
 
+function paint_side(label, count_txt, count_num, color) {
+    label[0].style.borderBottomColor = color;
+    label[0].style.color = color;
+    count_txt[0].style.backgroundColor = color;
+    count_num[0].style.backgroundColor = color;
+}
+
+// 対面に座っているときなどに使う表示だけの反転。記録は動かさない。
+// サイド数は表示位置に紐づくため、ラベルと一緒に左右を入れ替える
+function mirror_view() {
+    var left = att_1[0].textContent == "先攻" ? "後攻" : "先攻";
+    var right = left == "先攻" ? "後攻" : "先攻";
+    att_1[0].innerHTML = left;
+    att_1[1].innerHTML = left;
+    att_2[0].innerHTML = right;
+    att_2[1].innerHTML = right;
+    paint_side(side_label_1, side_count_1, side_number_1, att_colors[left]);
+    paint_side(side_label_2, side_count_2, side_number_2, att_colors[right]);
+
+    var tmp = counter_side_1.textContent;
+    counter_side_1.innerHTML = counter_side_2.textContent;
+    counter_side_2.innerHTML = tmp;
+    tmp = n_5;
+    n_5 = n_6;
+    n_6 = tmp;
+    counter_side_3.innerHTML = n_5;
+    counter_side_4.innerHTML = n_6;
+}
+
 window.addEventListener("load", ()=>{
     // 起動時の処理
     counter_1 = document.getElementById("counter-1");
@@ -453,6 +484,12 @@ window.addEventListener("load", ()=>{
     counter_side_4 = document.getElementById("counter-side-4");
     att_1 = document.getElementsByClassName("att_1");
     att_2 = document.getElementsByClassName("att_2");
+    side_label_1 = document.getElementsByClassName("side-count-label");
+    side_label_2 = document.getElementsByClassName("side-count-label second");
+    side_count_1 = document.getElementsByClassName("side-count-txt");
+    side_count_2 = document.getElementsByClassName("side-count-txt second");
+    side_number_1 = document.getElementsByClassName("side-count-number");
+    side_number_2 = document.getElementsByClassName("side-count-number second");
     check_1 = document.getElementById("check_energy");
     check_2 = document.getElementById("check_support");
     check_3 = document.getElementById("check_escape");

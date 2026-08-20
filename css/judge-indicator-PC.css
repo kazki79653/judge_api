@@ -232,6 +232,8 @@ a {
   text-decoration: none;
   white-space: nowrap;
 }
+/* 高さは項目数に合わせる。固定にすると項目を増やしたとき
+   閉じるボタンがメニュー下端からはみ出す */
 #g-nav {
   background: rgb(193, 200, 201);
   position: absolute;
@@ -239,8 +241,10 @@ a {
   top: 50px;
   right: 0;
   overflow-x: hidden;
+  overflow-y: auto;
   width: 0;
-  height: 50vh;
+  height: auto;
+  max-height: 85vh;
   transition: .5s;
 }
 #g-nav.open-menu {
