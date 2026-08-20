@@ -1,6 +1,6 @@
 let counter_1, counter_2, counter_3, counter_4;
 let counter_side_1, counter_side_2, counter_side_3, counter_side_4;
-let att_1, att_2, player_color_1, player_color_2, player_color_3, player_color_4;
+let att_1, att_2;
 let n_1, n_2, n_3, n_4, n_5, n_6;
 let side_btn_1, side_btn_2, side_btn_3, side_btn_4;
 let check_1, check_2, check_3, check_4;
@@ -136,8 +136,7 @@ function reset_color(player_name) {
     chenge_color("turn", player_name);
 }
 
-function paging(value) {
-    // 格納
+function current_memory() {
     var memory = [];
     for (let i = 0; i < checks.length; i++) {
         memory.push(checks[i].checked);
@@ -153,34 +152,18 @@ function paging(value) {
         memory.push(n_6);
         memory.push(n_5);
     }
-    memory = memory.concat(read_abilities());
+    return memory.concat(read_abilities());
+}
 
+function store_current_turn() {
     if (player_name == "先攻") {
-        a_memorys[player_turn] = memory;
+        a_memorys[player_turn] = current_memory();
     } else if (player_name == "後攻") {
-        b_memorys[player_turn] = memory;
+        b_memorys[player_turn] = current_memory();
     }
+}
 
-    // ターンの切り替え
-    if (player_name == "先攻") {
-        if (value == "previous" & player_turn > 1) {
-            player_name = "後攻";
-            player_turn -= 1;
-            turn.innerHTML = player_turn;
-        } else if (value == "next") {
-            player_name = "後攻";
-        }
-        player.innerHTML = player_name;
-    } else if (player_name == "後攻") {
-        player_name = "先攻"
-        player.innerHTML = player_name;
-        if (value == "next") {
-            player_turn += 1;
-            turn.innerHTML = player_turn;
-        }
-    }
-
-    //カウンタの切り替え
+function load_turn() {
     if (player_name == "先攻") {
         var n_memory = get_memory(a_memorys, player_turn)
     } else if (player_name == "後攻") {
@@ -209,6 +192,31 @@ function paging(value) {
     counter_4.innerHTML = n_4;
     counter_side_3.innerHTML = n_5;
     counter_side_4.innerHTML = n_6;
+}
+
+function paging(value) {
+    store_current_turn();
+
+    // ターンの切り替え
+    if (player_name == "先攻") {
+        if (value == "previous" & player_turn > 1) {
+            player_name = "後攻";
+            player_turn -= 1;
+            turn.innerHTML = player_turn;
+        } else if (value == "next") {
+            player_name = "後攻";
+        }
+        player.innerHTML = player_name;
+    } else if (player_name == "後攻") {
+        player_name = "先攻"
+        player.innerHTML = player_name;
+        if (value == "next") {
+            player_turn += 1;
+            turn.innerHTML = player_turn;
+        }
+    }
+
+    load_turn();
 }
 
 function addCount(num, sign){
@@ -404,51 +412,33 @@ function pullDown(flag) {
     }
 }
 
-function change_att() {
-    if (att_1[0].textContent == "先攻") {
-        att_1[0].innerHTML = "後攻";
-        att_1[1].innerHTML = "後攻";
-        att_2[0].innerHTML = "先攻";
-        att_2[1].innerHTML = "先攻";
-        player_color_1[0].style.borderBottomColor = "#3657be";
-        player_color_1[0].style.color = "#3657be";
-        player_color_2[0].style.borderBottomColor = "#d11e1e";
-        player_color_2[0].style.color = "#d11e1e";
-        player_color_3[0].style.backgroundColor = "#3657be";
-        player_color_4[0].style.backgroundColor = "#d11e1e";
-        player_color_5[0].style.backgroundColor = "#3657be";
-        player_color_6[0].style.backgroundColor = "#d11e1e";
-        tmp = counter_side_1.textContent;
-        counter_side_1.innerHTML = counter_side_2.textContent;
-        counter_side_2.innerHTML = tmp;
-        tmp = n_5;
-        n_5 = n_6;;
-        n_6 = tmp;
-        counter_side_3.innerHTML = n_5;
-        counter_side_4.innerHTML = n_6;
-    } else if (att_1[0].textContent == "後攻") {
-        att_1[0].innerHTML = "先攻";
-        att_1[1].innerHTML = "先攻";
-        att_2[0].innerHTML = "後攻";
-        att_2[1].innerHTML = "後攻";
-        player_color_1[0].style.borderBottomColor = "#d11e1e";
-        player_color_1[0].style.color = "#d11e1e";
-        player_color_2[0].style.borderBottomColor = "#3657be";
-        player_color_2[0].style.color = "#3657be";
-        player_color_3[0].style.backgroundColor = "#d11e1e";
-        player_color_4[0].style.backgroundColor = "#3657be";
-        player_color_5[0].style.backgroundColor = "#d11e1e";
-        player_color_6[0].style.backgroundColor = "#3657be";
-        tmp = counter_side_1.textContent;
-        counter_side_1.innerHTML = counter_side_2.textContent;
-        counter_side_2.innerHTML = tmp;
-        tmp = n_5;
-        n_5 = n_6;;
-        n_6 = tmp;
-        counter_side_3.innerHTML = n_5;
-        counter_side_4.innerHTML = n_6;
+// 各ターンの記録に入っているサイド取得数は(先攻,後攻)の並びで持っているため、
+// 記録そのものを入れ替えるだけでは相手側へ移らない
+function swap_side_records(memorys) {
+    for (var t in memorys) {
+        var record = memorys[t];
+        var tmp = record[8];
+        record[8] = record[9];
+        record[9] = tmp;
     }
+}
 
+// 先後を取り違えて記録したときの修正。先攻/後攻の表示位置は動かさず、
+// 2人分の記録(チェック・特性・回数・サイド)をそっくり入れ替える
+function change_att() {
+    store_current_turn();
+
+    var tmp_memorys = a_memorys;
+    a_memorys = b_memorys;
+    b_memorys = tmp_memorys;
+    swap_side_records(a_memorys);
+    swap_side_records(b_memorys);
+
+    var tmp_side = counter_side_1.textContent;
+    counter_side_1.innerHTML = counter_side_2.textContent;
+    counter_side_2.innerHTML = tmp_side;
+
+    load_turn();
 }
 
 window.addEventListener("load", ()=>{
@@ -463,12 +453,6 @@ window.addEventListener("load", ()=>{
     counter_side_4 = document.getElementById("counter-side-4");
     att_1 = document.getElementsByClassName("att_1");
     att_2 = document.getElementsByClassName("att_2");
-    player_color_1 = document.getElementsByClassName("side-count-label");
-    player_color_2 = document.getElementsByClassName("side-count-label second");
-    player_color_3 = document.getElementsByClassName("side-count-txt");
-    player_color_4 = document.getElementsByClassName("side-count-txt second");
-    player_color_5 = document.getElementsByClassName("side-count-number");
-    player_color_6 = document.getElementsByClassName("side-count-number second");
     check_1 = document.getElementById("check_energy");
     check_2 = document.getElementById("check_support");
     check_3 = document.getElementById("check_escape");
